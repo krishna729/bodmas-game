@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>BODMAS Pro Game</title>
+  <link rel="stylesheet" href="style.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <div class="navbar">
+
+    <div class="nav-title">BODMAS Challenge</div>
+
+    <!--  BUTTON STYLE LEADERBOARD -->
+    <div class="nav-right">
+      <button class="btn-grad" onclick="toggleLeaderboard()">
+        <i class="fa-solid fa-crown"></i>
+        Leaderboard
+      </button>
+    </div>
+
+  </div>
+
+  <div class="container">
+
+    <div class="top-bar">
+      <span>Level: <span id="level">1</span></span>
+      <span>Score: <span id="score">0</span></span>
+      <span>Time: <span id="timer">30</span>s</span>
+    </div>
+
+    <div class="question-box">
+      <div id="question"></div>
+      <div id="visual"></div>
+    </div>
+
+    <div class="buttons">
+      <button onclick="choose('multiply')">×</button>
+      <button onclick="choose('divide')">÷</button>
+      <button onclick="choose('add')">+</button>
+      <button onclick="choose('subtract')">−</button>
+    </div>
+
+    <div id="result"></div>
+
+    <div class="controls">
+      <button onclick="prevQuestion()"><i class="fa-solid fa-angles-left"></i></button>
+      <button onclick="nextQuestion()"><i class="fa-solid fa-angles-right"></i></button>
+      <button onclick="restartGame()"><i class="fa-solid fa-arrow-rotate-left"></i></button>
+    </div>
+
+  </div>
+
+  <!-- RIGHT SIDE LEADERBOARD -->
+  <div id="leaderboardPanel" class="leaderboard-panel">
+    <h3>
+      Leaderboard
+      <span style="float:right; cursor:pointer;" onclick="toggleLeaderboard()">
+        <i class="fa-solid fa-xmark"></i>
+      </span>
+    </h3>
+    <ul id="leaderboard"></ul>
+  </div>
+
+  <!-- RESULT POPUP -->
+  <div id="popup" class="popup hidden">
+    <div class="popup-content">
+      <h2 id="finalText"></h2>
+      <button onclick="restartGame()">Restart</button>
+    </div>
+  </div>
+
+  <audio id="correctSound" src="correct.mp3"></audio>
+  <audio id="wrongSound" src="wrong.mp3"></audio>
+  <audio id="winSound" src="congratulations.mp3"></audio>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script src="script.js"></script>
+
+</body>
+
+</html>
