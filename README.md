@@ -1,6 +1,6 @@
 # 🎮 BODMAS Learning Game
 
-🔗 **Live Demo:** https://bodmasgame.infinityfreeapp.com/
+🔗 **Live Demo:** bodmasgame.infinityfreeapp.com
 
 ## 📌 Overview
 This project is an interactive game designed to **teach BODMAS (order of operations)** through visual and step-by-step problem solving.
