@@ -1,88 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
-  <title>BODMAS Pro Game</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BODMAS — Learning Game</title>
   <link rel="stylesheet" href="style.css">
-
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
 </head>
-
 <body>
 
+  <!-- BACKGROUND GRID -->
+  <div class="bg-grid"></div>
+  <div class="bg-glow glow-1"></div>
+  <div class="bg-glow glow-2"></div>
+
   <!-- NAVBAR -->
-  <div class="navbar">
-
-    <div class="nav-title">BODMAS Challenge</div>
-
-    <!--  BUTTON STYLE LEADERBOARD -->
+  <nav class="navbar">
+    <div class="nav-brand">
+      <span class="brand-icon">⊕</span>
+      <span class="brand-text">BODMAS<span class="brand-sub">QUEST</span></span>
+    </div>
+    <div class="nav-center">
+      <div class="mode-pill">
+        <button class="mode-btn active" id="learnBtn" onclick="setMode('learn')">
+          <i class="fa-solid fa-book-open"></i> Learn
+        </button>
+        <button class="mode-btn" id="playBtn" onclick="setMode('play')">
+          <i class="fa-solid fa-gamepad"></i> Play
+        </button>
+        <div class="mode-slider" id="modeSlider"></div>
+      </div>
+    </div>
     <div class="nav-right">
-      <button class="btn-grad" onclick="toggleLeaderboard()">
+      <button class="leaderboard-btn" onclick="toggleLeaderboard()">
         <i class="fa-solid fa-crown"></i>
-        Leaderboard
+        <span>Ranks</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- STATS BAR -->
+  <div class="stats-bar">
+    <div class="stat-chip">
+      <i class="fa-solid fa-layer-group"></i>
+      <span class="stat-label">Level</span>
+      <span class="stat-val" id="level">1</span>
+    </div>
+    <div class="stat-chip score-chip">
+      <i class="fa-solid fa-star"></i>
+      <span class="stat-label">Score</span>
+      <span class="stat-val" id="score">0</span>
+    </div>
+    <div class="stat-chip timer-chip">
+      <i class="fa-solid fa-clock"></i>
+      <span class="stat-label">Time</span>
+      <span class="stat-val" id="timer">30</span>
+    </div>
+  </div>
+
+  <!-- TIMER BAR -->
+  <div class="timer-bar-wrap">
+    <div class="timer-bar" id="timerBar"></div>
+  </div>
+
+  <!-- MAIN WRAPPER -->
+  <main class="main-wrap">
+
+    <!-- BODMAS LEGEND -->
+    <div class="bodmas-legend">
+      <span class="leg-item" data-letter="B">B<small>rackets</small></span>
+      <span class="leg-sep">›</span>
+      <span class="leg-item" data-letter="O">O<small>rders</small></span>
+      <span class="leg-sep">›</span>
+      <span class="leg-item active" data-letter="D">D<small>ivision</small></span>
+      <span class="leg-sep">›</span>
+      <span class="leg-item active" data-letter="M">M<small>ultiply</small></span>
+      <span class="leg-sep">›</span>
+      <span class="leg-item" data-letter="A">A<small>ddition</small></span>
+      <span class="leg-sep">›</span>
+      <span class="leg-item" data-letter="S">S<small>ubtract</small></span>
+    </div>
+
+    <!-- QUESTION CARD -->
+    <div class="question-card" id="questionCard">
+      <div class="card-tag">SOLVE STEP BY STEP</div>
+      <div class="expression-wrap">
+        <div id="question" class="expression"></div>
+      </div>
+      <div id="stepExplain" class="step-explain"></div>
+    </div>
+
+    <!-- OPERATION BUTTONS -->
+    <div class="ops-label">Which operation goes first?</div>
+    <div class="op-grid">
+      <button class="op-btn" onclick="choose('multiply')" data-op="multiply">
+        <span class="op-symbol">×</span>
+        <span class="op-name">Multiply</span>
+      </button>
+      <button class="op-btn" onclick="choose('divide')" data-op="divide">
+        <span class="op-symbol">÷</span>
+        <span class="op-name">Divide</span>
+      </button>
+      <button class="op-btn" onclick="choose('add')" data-op="add">
+        <span class="op-symbol">+</span>
+        <span class="op-name">Add</span>
+      </button>
+      <button class="op-btn" onclick="choose('subtract')" data-op="subtract">
+        <span class="op-symbol">−</span>
+        <span class="op-name">Subtract</span>
       </button>
     </div>
 
-  </div>
+    <!-- FEEDBACK -->
+    <div id="result" class="feedback-line"></div>
 
-  <div class="container">
-
-    <div class="top-bar">
-      <span>Level: <span id="level">1</span></span>
-      <span>Score: <span id="score">0</span></span>
-      <span>Time: <span id="timer">30</span>s</span>
-    </div>
-
-    <div class="question-box">
-      <div id="question"></div>
-      <div id="visual"></div>
-    </div>
-
-    <div class="buttons">
-      <button onclick="choose('multiply')">×</button>
-      <button onclick="choose('divide')">÷</button>
-      <button onclick="choose('add')">+</button>
-      <button onclick="choose('subtract')">−</button>
-    </div>
-
-    <div id="result"></div>
-
+    <!-- CONTROLS -->
     <div class="controls">
-      <button onclick="prevQuestion()"><i class="fa-solid fa-angles-left"></i></button>
-      <button onclick="nextQuestion()"><i class="fa-solid fa-angles-right"></i></button>
-      <button onclick="restartGame()"><i class="fa-solid fa-arrow-rotate-left"></i></button>
+      <button class="ctrl-btn" onclick="prevQuestion()" title="Previous">
+        <i class="fa-solid fa-chevron-left"></i>
+      </button>
+      <button class="ctrl-btn restart-btn" onclick="restartGame()" title="Restart">
+        <i class="fa-solid fa-arrow-rotate-left"></i>
+      </button>
+      <button class="ctrl-btn" onclick="nextQuestion()" title="Next">
+        <i class="fa-solid fa-chevron-right"></i>
+      </button>
     </div>
 
-  </div>
+  </main>
 
-  <!-- RIGHT SIDE LEADERBOARD -->
-  <div id="leaderboardPanel" class="leaderboard-panel">
-    <h3>
-      Leaderboard
-      <span style="float:right; cursor:pointer;" onclick="toggleLeaderboard()">
-        <i class="fa-solid fa-xmark"></i>
-      </span>
-    </h3>
-    <ul id="leaderboard"></ul>
-  </div>
+  <!-- LEADERBOARD PANEL -->
+  <aside id="leaderboardPanel" class="leaderboard-panel">
+    <div class="lb-header">
+      <div class="lb-title"><i class="fa-solid fa-crown"></i> Top Players</div>
+      <button class="lb-close" onclick="toggleLeaderboard()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <ul id="leaderboard" class="lb-list"></ul>
+    <div class="lb-footer">Scores update live</div>
+  </aside>
+  <div class="lb-overlay" id="lbOverlay" onclick="toggleLeaderboard()"></div>
 
   <!-- RESULT POPUP -->
   <div id="popup" class="popup hidden">
-    <div class="popup-content">
-      <h2 id="finalText"></h2>
-      <button onclick="restartGame()">Restart</button>
+    <div class="popup-card">
+      <div class="popup-icon" id="popupIcon"></div>
+      <h2 id="finalText" class="popup-title"></h2>
+      <div id="popupScore" class="popup-score"></div>
+      <button class="popup-btn" onclick="restartGame()">
+        <i class="fa-solid fa-rotate-right"></i> Play Again
+      </button>
     </div>
   </div>
 
+  <!-- AUDIO -->
   <audio id="correctSound" src="correct.mp3"></audio>
   <audio id="wrongSound" src="wrong.mp3"></audio>
   <audio id="winSound" src="congratulations.mp3"></audio>
 
+  <!-- CONFETTI -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <script src="script.js"></script>
-
 </body>
-
 </html>
